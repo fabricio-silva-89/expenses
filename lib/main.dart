@@ -12,8 +12,22 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+    return MaterialApp(
+      home: const MyHomePage(),
+      theme: ThemeData(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              secondary: Colors.amber,
+              primary: Colors.purple,
+            ),
+        fontFamily: 'Quicksand',
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -52,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       transactions.add(newTransaction);
     });
+
+    Navigator.of(context).pop();
   }
 
   openTransactioFormModal(BuildContext context) {
