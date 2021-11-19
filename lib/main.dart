@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:expenses/components/chart.dart';
 import 'package:flutter/material.dart';
 
 import 'components/transaction_form.dart';
@@ -15,6 +16,7 @@ class ExpensesApp extends StatelessWidget {
     return MaterialApp(
       home: const MyHomePage(),
       theme: ThemeData(
+        primarySwatch: Colors.purple,
         colorScheme: ThemeData().colorScheme.copyWith(
               secondary: Colors.amber,
               primary: Colors.purple,
@@ -41,19 +43,32 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Novo Tênis de Corrida',
-    //   value: 310.76,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta de Luz',
-    //   value: 211.30,
-    //   date: DateTime.now(),
-    // )
+    Transaction(
+      id: 't0',
+      title: 'Conta Antiga',
+      value: 310.76,
+      date: DateTime.now().subtract(const Duration(days: 33)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now().subtract(const Duration(days: 4)),
+    )
   ];
+
+  List<Transaction> get recentTransactions {
+    return transactions
+        .where((element) => element.date
+            .isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList();
+  }
 
   void addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -94,11 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Card(
-              child: Text('Gráfico'),
-              elevation: 5,
-              color: Colors.blue,
-            ),
+            Chart(recentTransactions: recentTransactions),
             TransactionList(transactions: transactions),
           ],
         ),
